@@ -1,0 +1,209 @@
+<div class="min-h-screen bg-stone-100">
+  <!-- Progress Stepper -->
+  <div class="bg-white border-b border-gray-200 px-6 py-4">
+    <div class="max-w-4xl mx-auto">
+      <div class="flex items-center justify-center space-x-8">
+        <!-- Welcome Step -->
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <span class="ml-2 text-sm font-medium text-gray-900">Welcome</span>
+        </div>
+        
+        <!-- Progress Line -->
+        <div class="w-16 h-1 bg-emerald-600"></div>
+        
+        <!-- Prepare Step -->
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <span class="ml-2 text-sm font-medium text-gray-900">Prepare</span>
+        </div>
+        
+        <!-- Progress Line -->
+        <div class="w-16 h-1 bg-emerald-600"></div>
+        
+        <!-- Focus Sounds Step -->
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+          </div>
+          <span class="ml-2 text-sm font-medium text-gray-900">Focus Sounds</span>
+        </div>
+        
+        <!-- Progress Line -->
+        <div class="w-16 h-1 bg-emerald-600"></div>
+        
+        <!-- Breathe Step (Current) -->
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center">
+            <div class="w-3 h-3 bg-white rounded-full"></div>
+          </div>
+          <span class="ml-2 text-sm font-medium text-gray-900">Breathe</span>
+        </div>
+        
+        <!-- Progress Line -->
+        <div class="w-16 h-1 bg-gray-300"></div>
+        
+        <!-- Deep Work Step -->
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <span class="ml-2 text-sm font-medium text-gray-500">Deep Work</span>
+        </div>
+        
+        <!-- Progress Line -->
+        <div class="w-16 h-1 bg-gray-300"></div>
+        
+        <!-- Reflect Step -->
+        <div class="flex items-center">
+          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <span class="ml-2 text-sm font-medium text-gray-500">Reflect</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex items-center justify-center p-6">
+    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Center Your Mind</h1>
+        <p class="text-gray-600">Take a moment to breathe deeply and center yourself before your deep work session</p>
+      </div>
+
+      <!-- Breathing Circle -->
+      <div class="flex justify-center mb-8">
+        <div class="relative">
+          <!-- Outer Ring -->
+          <div 
+            class="w-64 h-64 rounded-full border-4 border-emerald-200 flex items-center justify-center transition-all duration-1000 ease-in-out"
+            [style.transform]="'scale(' + outerScale() + ')'">
+            
+            <!-- Inner Circle -->
+            <div 
+              class="w-40 h-40 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg transition-all duration-1000 ease-in-out"
+              [style.transform]="'scale(' + innerScale() + ')'">
+              
+              <!-- Breathing Icon -->
+              <svg class="w-16 h-16 text-white opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+            </div>
+          </div>
+          
+          <!-- Progress Ring -->
+          <div class="absolute inset-0 w-64 h-64">
+            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="#d1fae5"
+                stroke-width="2"/>
+              <circle
+                cx="50"
+                cy="50"
+                r="45"
+                fill="none"
+                stroke="#10b981"
+                stroke-width="2"
+                stroke-linecap="round"
+                [style.stroke-dasharray]="circumference()"
+                [style.stroke-dashoffset]="strokeDashoffset()"
+                class="transition-all duration-1000 ease-linear"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Breathing Instructions -->
+      <div class="text-center mb-8">
+        <div class="mb-4">
+          <h2 class="text-2xl font-semibold text-gray-800 mb-2">{{currentPhase()}}</h2>
+          <p class="text-lg text-gray-600">{{instruction()}}</p>
+        </div>
+        
+        <!-- Timer Display -->
+        <div class="text-4xl font-bold text-emerald-600 mb-4">{{currentCount()}}</div>
+        
+        <!-- Cycle Counter -->
+        <div class="text-sm text-gray-500">
+          Cycle {{completedCycles() + 1}} of {{totalCycles}}
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="flex justify-center space-x-4 mb-8">
+        @if (!isActive()) {
+          <button 
+            (click)="startBreathing()"
+            class="flex items-center px-8 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors font-medium">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m2 0h1M4 21V9a4 4 0 014-4h8a4 4 0 014 4v12"/>
+            </svg>
+            Start Breathing
+          </button>
+        } @else {
+          <button 
+            (click)="pauseBreathing()"
+            class="flex items-center px-6 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-colors font-medium">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Pause
+          </button>
+          <button 
+            (click)="resetBreathing()"
+            class="flex items-center px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors font-medium">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+            </svg>
+            Reset
+          </button>
+        }
+      </div>
+
+      <!-- Breathing Pattern Info -->
+      <div class="bg-emerald-50 rounded-xl p-4 mb-8">
+        <h3 class="font-semibold text-emerald-800 mb-2">4-7-8 Breathing Pattern</h3>
+        <div class="text-sm text-emerald-700 space-y-1">
+          <p>• <strong>Inhale</strong> for 4 seconds through your nose</p>
+          <p>• <strong>Hold</strong> for 7 seconds</p>
+          <p>• <strong>Exhale</strong> for 8 seconds through your mouth</p>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div class="flex justify-between">
+        <button 
+          (click)="goBack()"
+          class="flex items-center px-6 py-3 text-gray-700 hover:text-gray-900 transition-colors">
+          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+          </svg>
+          Back
+        </button>
+        
+        <button 
+          (click)="continue()"
+          [disabled]="completedCycles() < 1"
+          [class]="completedCycles() >= 1 ? 'flex items-center px-8 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors' : 'flex items-center px-8 py-3 bg-gray-300 text-gray-500 rounded-xl cursor-not-allowed'">
+          Continue
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
