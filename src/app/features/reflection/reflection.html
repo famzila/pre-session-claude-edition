@@ -1,17 +1,21 @@
 <!-- Main Content -->
-  <div class="flex items-center justify-center p-6">
-    <div class="max-w-3xl w-full bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+  <div class="flex items-center justify-center p-6 relative">
+    <!-- Ambient glow effects -->
+    <div class="absolute top-20 left-1/4 w-40 h-40 bg-amber-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-20 right-1/3 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl"></div>
+    
+    <div class="max-w-3xl w-full bg-slate-800/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-700/50 p-10 relative z-10">
       
       @if (!isSubmitted()) {
         <!-- Header -->
-        <div class="text-center mb-8">
-          <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="text-center mb-10">
+          <div class="w-20 h-20 bg-gradient-to-br from-emerald-400/20 to-teal-500/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6 border border-emerald-400/30 shadow-lg shadow-emerald-500/20">
+            <svg class="w-10 h-10 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
             </svg>
           </div>
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">Session Reflection</h1>
-          <p class="text-gray-600">Take a moment to reflect on your deep work session and capture insights for continuous improvement</p>
+          <h1 class="text-4xl font-bold text-slate-100 mb-3">Session Reflection</h1>
+          <p class="text-slate-300 text-lg">Take a moment to reflect on your deep work session and capture insights for continuous improvement</p>
         </div>
 
         <!-- Reflection Form -->
@@ -19,87 +23,98 @@
           
           <!-- Focus Rating -->
           <div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">How would you rate your focus level during this session?</h3>
+            <h3 class="text-lg font-semibold text-slate-200 mb-3">How would you rate your focus level during this session?</h3>
             <div class="flex items-center justify-center space-x-2">
               @for (star of [1,2,3,4,5]; track star) {
                 <button 
                   (click)="setFocusRating(star)"
-                  [class]="focusRating() >= star ? 'w-10 h-10 text-yellow-400 hover:text-yellow-500 transition-colors' : 'w-10 h-10 text-gray-300 hover:text-yellow-400 transition-colors'">
+                  [class]="focusRating() >= star ? 'w-10 h-10 text-amber-400 hover:text-amber-500 transition-colors' : 'w-10 h-10 text-slate-400 hover:text-amber-400 transition-colors'">
                   <svg fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                   </svg>
                 </button>
               }
             </div>
-            <p class="text-center text-sm text-gray-500 mt-2">{{getFocusRatingText()}}</p>
+            <p class="text-center text-sm text-slate-400 mt-2">{{getFocusRatingText()}}</p>
           </div>
 
           <!-- Productivity Rating -->
           <div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">How productive did you feel during this session?</h3>
+            <h3 class="text-lg font-semibold text-slate-200 mb-3">How productive did you feel during this session?</h3>
             <div class="flex items-center justify-center space-x-2">
               @for (star of [1,2,3,4,5]; track star) {
                 <button 
                   (click)="setProductivityRating(star)"
-                  [class]="productivityRating() >= star ? 'w-10 h-10 text-emerald-400 hover:text-emerald-500 transition-colors' : 'w-10 h-10 text-gray-300 hover:text-emerald-400 transition-colors'">
+                  [class]="productivityRating() >= star ? 'w-10 h-10 text-amber-400 hover:text-amber-500 transition-colors' : 'w-10 h-10 text-slate-400 hover:text-amber-400 transition-colors'">
                   <svg fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
                   </svg>
                 </button>
               }
             </div>
-            <p class="text-center text-sm text-gray-500 mt-2">{{getProductivityRatingText()}}</p>
+            <p class="text-center text-sm text-slate-400 mt-2">{{getProductivityRatingText()}}</p>
           </div>
 
           <!-- Quick Insights -->
           <div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">What worked well in this session?</h3>
-            <div class="space-y-2">
+            <h3 class="text-lg font-semibold text-slate-200 mb-3">What worked well in this session?</h3>
+            <div class="space-y-3">
               @for (insight of insights(); track insight.id) {
-                <label class="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors">
-                  <input 
-                    type="checkbox" 
-                    [checked]="selectedInsights().includes(insight.id)"
-                    (change)="toggleInsight(insight.id)"
-                    class="w-4 h-4 text-emerald-600 bg-gray-100 border-gray-300 rounded focus:ring-emerald-500 focus:ring-2">
-                  <span class="text-gray-700">{{insight.text}}</span>
-                </label>
+                <div [class]="selectedInsights().includes(insight.id) ? 'flex items-center p-4 bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl border border-amber-400/30 shadow-lg shadow-amber-500/10' : 'flex items-center p-4 bg-slate-700/30 rounded-2xl border border-slate-600/50 hover:border-slate-500/70 transition-all duration-300'">
+                  <!-- Checkbox -->
+                  <div class="flex-shrink-0 mr-4">
+                    <button 
+                      (click)="toggleInsight(insight.id)"
+                      [class]="selectedInsights().includes(insight.id) ? 'w-6 h-6 rounded-xl border-2 border-amber-400 bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center hover:from-amber-500 hover:to-orange-600 transition-all duration-300 shadow-lg shadow-amber-500/30' : 'w-6 h-6 rounded-xl border-2 border-slate-500 bg-slate-800/50 flex items-center justify-center hover:border-amber-400 hover:shadow-md hover:shadow-amber-500/20 transition-all duration-300'">
+                      @if (selectedInsights().includes(insight.id)) {
+                        <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                      }
+                    </button>
+                  </div>
+                  
+                  <!-- Insight Text -->
+                  <div class="flex-1">
+                    <span class="text-slate-200">{{insight.text}}</span>
+                  </div>
+                </div>
               }
             </div>
           </div>
 
           <!-- Key Accomplishments -->
           <div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">What did you accomplish?</h3>
+            <h3 class="text-lg font-semibold text-slate-200 mb-3">What did you accomplish?</h3>
             <textarea 
               [value]="accomplishments()" 
               (input)="updateAccomplishments($event)"
               rows="3"
               placeholder="Describe the key tasks or goals you completed during this session..."
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-none">
+              class="w-full px-4 py-3 bg-slate-700/60 border border-slate-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 placeholder-slate-400 resize-none backdrop-blur-sm">
             </textarea>
           </div>
 
           <!-- Challenges & Improvements -->
           <div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">What could be improved for next time?</h3>
+            <h3 class="text-lg font-semibold text-slate-200 mb-3">What could be improved for next time?</h3>
             <textarea 
               [value]="improvements()" 
               (input)="updateImprovements($event)"
               rows="3"
               placeholder="Note any distractions, challenges, or ideas for improving your next deep work session..."
-              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 resize-none">
+              class="w-full px-4 py-3 bg-slate-700/60 border border-slate-600/50 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-amber-500 text-slate-200 placeholder-slate-400 resize-none backdrop-blur-sm">
             </textarea>
           </div>
 
           <!-- Mood After Session -->
           <div>
-            <h3 class="text-lg font-semibold text-gray-800 mb-3">How do you feel after this session?</h3>
+            <h3 class="text-lg font-semibold text-slate-200 mb-3">How do you feel after this session?</h3>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
               @for (mood of moods(); track mood.id) {
                 <button 
                   (click)="setMood(mood.id)"
-                  [class]="selectedMood() === mood.id ? 'p-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-700 transition-all duration-200' : 'p-4 rounded-xl border-2 border-gray-200 bg-white hover:border-emerald-300 hover:bg-emerald-50 transition-all duration-200'">
+                  [class]="selectedMood() === mood.id ? 'p-4 rounded-xl border-2 border-amber-500 bg-amber-500/20 text-amber-200 backdrop-blur-sm transition-all duration-200' : 'p-4 rounded-xl border-2 border-slate-600/50 bg-slate-700/40 text-slate-200 hover:border-amber-400 hover:bg-amber-500/10 backdrop-blur-sm transition-all duration-200'">
                   <div class="text-3xl mb-2">{{mood.emoji}}</div>
                   <div class="text-sm font-medium">{{mood.label}}</div>
                 </button>
@@ -113,7 +128,7 @@
           <button 
             (click)="submitReflection()"
             [disabled]="!canSubmit()"
-            [class]="canSubmit() ? 'px-8 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors font-medium text-lg' : 'px-8 py-3 bg-gray-300 text-gray-500 rounded-xl cursor-not-allowed font-medium text-lg'">
+            [class]="canSubmit() ? 'px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all duration-200 font-medium text-lg shadow-lg shadow-amber-500/20' : 'px-8 py-3 bg-slate-600 text-slate-400 rounded-xl cursor-not-allowed font-medium text-lg'">
             Complete Reflection
           </button>
         </div>
@@ -121,46 +136,46 @@
       } @else {
         <!-- Thank You Message -->
         <div class="text-center">
-          <div class="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <svg class="w-10 h-10 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div class="w-20 h-20 bg-gradient-to-br from-amber-400/20 to-orange-500/20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto mb-6 border border-amber-400/30 shadow-lg shadow-amber-500/20">
+            <svg class="w-10 h-10 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
           </div>
           
-          <h2 class="text-3xl font-bold text-gray-900 mb-4">Reflection Complete!</h2>
-          <p class="text-lg text-gray-600 mb-6">Thank you for taking the time to reflect on your deep work session.</p>
+          <h2 class="text-3xl font-bold text-slate-100 mb-4">Reflection Complete!</h2>
+          <p class="text-lg text-slate-300 mb-6">Thank you for taking the time to reflect on your deep work session.</p>
           
           <!-- Session Summary -->
-          <div class="bg-emerald-50 rounded-xl p-6 mb-8">
-            <h3 class="font-semibold text-emerald-800 mb-4">Your Session Summary</h3>
+          <div class="bg-slate-700/40 backdrop-blur-sm rounded-xl p-6 mb-8 border border-slate-600/50">
+            <h3 class="font-semibold text-amber-300 mb-4">Your Session Summary</h3>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
               <div>
-                <div class="text-2xl font-bold text-emerald-600">{{focusRating()}}/5</div>
-                <div class="text-sm text-emerald-700">Focus Level</div>
+                <div class="text-2xl font-bold text-amber-400">{{focusRating()}}/5</div>
+                <div class="text-sm text-amber-200">Focus Level</div>
               </div>
               <div>
-                <div class="text-2xl font-bold text-emerald-600">{{productivityRating()}}/5</div>
-                <div class="text-sm text-emerald-700">Productivity</div>
+                <div class="text-2xl font-bold text-amber-400">{{productivityRating()}}/5</div>
+                <div class="text-sm text-amber-200">Productivity</div>
               </div>
               <div>
                 <div class="text-2xl">{{getCurrentMoodEmoji()}}</div>
-                <div class="text-sm text-emerald-700">Post-Session Mood</div>
+                <div class="text-sm text-amber-200">Post-Session Mood</div>
               </div>
             </div>
           </div>
           
           <div class="space-y-4 text-left max-w-2xl mx-auto">
             @if (accomplishments().trim()) {
-              <div class="bg-blue-50 rounded-lg p-4">
-                <h4 class="font-medium text-blue-800 mb-2">Key Accomplishments</h4>
-                <p class="text-blue-700">{{accomplishments()}}</p>
+              <div class="bg-slate-700/40 backdrop-blur-sm rounded-lg p-4 border border-slate-600/50">
+                <h4 class="font-medium text-amber-300 mb-2">Key Accomplishments</h4>
+                <p class="text-slate-200">{{accomplishments()}}</p>
               </div>
             }
             
             @if (improvements().trim()) {
-              <div class="bg-amber-50 rounded-lg p-4">
-                <h4 class="font-medium text-amber-800 mb-2">Areas for Improvement</h4>
-                <p class="text-amber-700">{{improvements()}}</p>
+              <div class="bg-slate-700/40 backdrop-blur-sm rounded-lg p-4 border border-slate-600/50">
+                <h4 class="font-medium text-orange-300 mb-2">Areas for Improvement</h4>
+                <p class="text-slate-200">{{improvements()}}</p>
               </div>
             }
           </div>
@@ -168,12 +183,12 @@
           <div class="mt-8">
             <button 
               (click)="startNewSession()"
-              class="mr-4 px-6 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors font-medium">
+              class="mr-4 px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl hover:from-amber-600 hover:to-orange-600 transition-all duration-200 font-medium shadow-lg shadow-amber-500/20">
               Start New Session
             </button>
             <button 
               (click)="finish()"
-              class="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors font-medium">
+              class="px-6 py-3 bg-slate-600 text-slate-200 rounded-xl hover:bg-slate-500 transition-colors font-medium">
               Finish
             </button>
           </div>

@@ -1,143 +1,185 @@
 <!-- Main Content -->
   <div class="flex items-center justify-center p-6">
-    <div class="max-w-2xl w-full bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
-      <!-- Header -->
-      <div class="text-center mb-8">
-        <h1 class="text-3xl font-bold text-gray-900 mb-2">Pomodoro Timer</h1>
-        <p class="text-gray-600">Work in focused intervals with regular breaks for optimal productivity</p>
-      </div>
-
-      <!-- Timer Settings -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <!-- Work Duration -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Work Duration (minutes)</label>
-          <input 
-            type="number" 
-            [value]="workDuration()" 
-            (input)="updateWorkDuration($event)"
-            min="1" 
-            max="60"
-            [disabled]="isActive()"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center text-lg font-medium disabled:bg-gray-100 disabled:cursor-not-allowed">
+    <!-- Ambient glow effect -->
+    <div class="absolute inset-0 bg-gradient-to-br from-amber-900/20 via-transparent to-orange-900/20 pointer-events-none"></div>
+    
+    <div class="max-w-2xl w-full bg-slate-800/60 backdrop-blur-xl rounded-3xl shadow-2xl border border-slate-700/50 p-8 relative">
+      <!-- Warm ambient glow -->
+      <div class="absolute -inset-1 bg-gradient-to-r from-amber-600/20 to-orange-600/20 rounded-3xl blur-xl opacity-75"></div>
+      <div class="relative">
+        <!-- Header -->
+        <div class="text-center mb-8">
+          <h1 class="text-3xl font-bold text-slate-100 mb-2 drop-shadow-lg">Pomodoro Timer</h1>
+          <p class="text-slate-200">Work in focused intervals with regular breaks for optimal productivity</p>
         </div>
-        
-        <!-- Break Duration -->
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2">Break Duration (minutes)</label>
-          <input 
-            type="number" 
-            [value]="breakDuration()" 
-            (input)="updateBreakDuration($event)"
-            min="1" 
-            max="30"
-            [disabled]="isActive()"
-            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-center text-lg font-medium disabled:bg-gray-100 disabled:cursor-not-allowed">
-        </div>
-      </div>
 
-      <!-- Timer Display -->
-      <div class="flex justify-center mb-8">
-        <div class="relative">
-          <!-- Timer Circle -->
-          <div class="w-80 h-80 relative">
-            <svg class="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-              <!-- Background Circle -->
-              <circle
-                cx="50"
-                cy="50"
-                r="45"
-                fill="none"
-                stroke="#f3f4f6"
-                stroke-width="4"/>
+        <!-- Timer Settings -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <!-- Work Duration -->
+          <div>
+            <label class="block text-sm font-medium text-slate-200 mb-2">Work Duration (minutes)</label>
+            <input 
+              type="number" 
+              [value]="workDuration()" 
+              (input)="updateWorkDuration($event)"
+              min="1" 
+              max="60"
+              [disabled]="isActive()"
+              class="w-full px-4 py-3 bg-slate-700/60 backdrop-blur-md border border-slate-600/50 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 text-center text-lg font-medium text-slate-100 placeholder-slate-400 disabled:bg-slate-800/60 disabled:cursor-not-allowed transition-all duration-300">
+          </div>
+          
+          <!-- Break Duration -->
+          <div>
+            <label class="block text-sm font-medium text-slate-200 mb-2">Break Duration (minutes)</label>
+            <input 
+              type="number" 
+              [value]="breakDuration()" 
+              (input)="updateBreakDuration($event)"
+              min="1" 
+              max="30"
+              [disabled]="isActive()"
+              class="w-full px-4 py-3 bg-slate-700/60 backdrop-blur-md border border-slate-600/50 rounded-xl focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500/50 text-center text-lg font-medium text-slate-100 placeholder-slate-400 disabled:bg-slate-800/60 disabled:cursor-not-allowed transition-all duration-300">
+          </div>
+        </div>
+
+        <!-- Timer Display -->
+        <div class="flex justify-center mb-8">
+          <div class="relative">
+            <!-- Timer Circle with glow effect -->
+            <div class="w-80 h-80 relative">
+              <!-- Outer glow ring -->
+              <div class="absolute inset-0 rounded-full bg-gradient-to-br from-amber-500/20 to-orange-600/20 blur-lg opacity-50"></div>
               
-              <!-- Progress Circle -->
-              <circle
-                cx="50"
-                cy="50"
-                r="45"
-                fill="none"
-                [attr.stroke]="isBreakTime() ? '#f59e0b' : '#10b981'"
-                stroke-width="4"
-                stroke-linecap="round"
-                [style.stroke-dasharray]="circumference()"
-                [style.stroke-dashoffset]="strokeDashoffset()"
-                class="transition-all duration-1000 ease-linear"/>
-            </svg>
-            
-            <!-- Timer Content -->
-            <div class="absolute inset-0 flex flex-col items-center justify-center">
-              <!-- Brain Icon -->
-              <div class="mb-4">
-                <svg class="w-12 h-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                </svg>
+              <svg class="w-full h-full transform -rotate-90 relative z-10" viewBox="0 0 100 100">
+                <!-- Background Circle -->
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="none"
+                  stroke="#334155"
+                  stroke-width="3"/>
+                
+                <!-- Progress Circle with gradient -->
+                <defs>
+                  <linearGradient id="workGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#ea580c;stop-opacity:1" />
+                  </linearGradient>
+                  <linearGradient id="breakGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#fb923c;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#f97316;stop-opacity:1" />
+                  </linearGradient>
+                </defs>
+                
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="45"
+                  fill="none"
+                  [attr.stroke]="isBreakTime() ? 'url(#breakGradient)' : 'url(#workGradient)'"
+                  stroke-width="4"
+                  stroke-linecap="round"
+                  [style.stroke-dasharray]="circumference()"
+                  [style.stroke-dashoffset]="strokeDashoffset()"
+                  class="transition-all duration-1000 ease-linear drop-shadow-lg"/>
+              </svg>
+              
+              <!-- Timer Content -->
+              <div class="absolute inset-0 flex flex-col items-center justify-center z-20">
+                <!-- Brain Icon with warm glow -->
+                <div class="mb-4">
+                  <svg class="w-12 h-12 text-amber-400 drop-shadow-md" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                  </svg>
+                </div>
+                
+                <!-- Timer Display -->
+                <div class="text-6xl font-bold text-slate-100 mb-2 drop-shadow-lg">{{formattedTime()}}</div>
+                
+                <!-- Status -->
+                <div class="text-lg text-slate-200 mb-1 drop-shadow-md">{{currentStatus()}}</div>
+                
+                <!-- Cycle Counter -->
+                <div class="text-sm text-slate-300">Cycle {{completedCycles()}}/{{totalCycles}}</div>
+                
+                <!-- Sound Status -->
+                @if (selectedSoundName()) {
+                  <div class="mt-2 flex items-center space-x-2 text-xs">
+                    @if (isSoundPlaying()) {
+                      <div class="flex items-center space-x-1 text-amber-400">
+                        <svg class="w-3 h-3 animate-pulse" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+                        </svg>
+                        <span>{{selectedSoundName()}} playing</span>
+                      </div>
+                    } @else {
+                      <div class="flex items-center space-x-1 text-slate-400">
+                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                          <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63z M19 12c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71z M4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3z"/>
+                        </svg>
+                        <span>{{selectedSoundName()}} paused</span>
+                      </div>
+                    }
+                  </div>
+                }
               </div>
-              
-              <!-- Timer Display -->
-              <div class="text-6xl font-bold text-gray-800 mb-2">{{formattedTime()}}</div>
-              
-              <!-- Status -->
-              <div class="text-lg text-gray-600 mb-1">{{currentStatus()}}</div>
-              
-              <!-- Cycle Counter -->
-              <div class="text-sm text-gray-500">Cycle {{completedCycles()}}/{{totalCycles}}</div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Timer Controls -->
-      <div class="flex justify-center space-x-4 mb-8">
-        @if (!isActive()) {
-          <button 
-            (click)="startTimer()"
-            class="flex items-center px-8 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors font-medium text-lg">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m2 0h1M4 21V9a4 4 0 014-4h8a4 4 0 014 4v12"/>
-            </svg>
-            Start Session
-          </button>
-        } @else {
-          <button 
-            (click)="pauseTimer()"
-            class="flex items-center px-6 py-3 bg-gray-600 text-white rounded-xl hover:bg-gray-700 transition-colors font-medium">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            Pause
-          </button>
-          <button 
-            (click)="resetTimer()"
-            class="flex items-center px-6 py-3 bg-gray-200 text-gray-700 rounded-xl hover:bg-gray-300 transition-colors font-medium">
-            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-            </svg>
-            Reset
-          </button>
-        }
-      </div>
+        <!-- Timer Controls -->
+        <div class="flex justify-center space-x-4 mb-8">
+          @if (!isActive()) {
+            <button 
+              (click)="startTimer()"
+              class="flex items-center px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-xl hover:from-amber-600 hover:to-orange-700 transition-all duration-300 font-medium text-lg shadow-lg hover:shadow-amber-500/25 transform hover:scale-105">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m2 0h1M4 21V9a4 4 0 014-4h8a4 4 0 014 4v12"/>
+              </svg>
+              Start Session
+            </button>
+          } @else {
+            <button 
+              (click)="pauseTimer()"
+              class="flex items-center px-6 py-3 bg-slate-700/60 backdrop-blur-md border border-slate-600/50 text-slate-200 rounded-xl hover:bg-slate-600/60 hover:border-amber-500/50 transition-all duration-300 font-medium shadow-lg">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Pause
+            </button>
+            <button 
+              (click)="resetTimer()"
+              class="flex items-center px-6 py-3 bg-slate-700/60 backdrop-blur-md border border-slate-600/50 text-slate-200 rounded-xl hover:bg-slate-600/60 hover:border-orange-500/50 transition-all duration-300 font-medium shadow-lg">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              Reset
+            </button>
+          }
+        </div>
 
-      <!-- Navigation -->
-      <div class="flex justify-between">
-        <button 
-          (click)="goBack()"
-          class="flex items-center px-6 py-3 text-gray-700 hover:text-gray-900 transition-colors">
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-          </svg>
-          Back
-        </button>
-        
-        <button 
-          (click)="continue()"
-          [disabled]="completedCycles() < 1"
-          [class]="completedCycles() >= 1 ? 'flex items-center px-8 py-3 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-colors' : 'flex items-center px-8 py-3 bg-gray-300 text-gray-500 rounded-xl cursor-not-allowed'">
-          Reflect
-          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-          </svg>
-        </button>
+        <!-- Navigation -->
+        <div class="flex justify-between">
+          <button 
+            (click)="goBack()"
+            class="flex items-center px-6 py-3 text-slate-300 hover:text-amber-400 transition-all duration-300 hover:bg-slate-700/30 rounded-xl">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Back
+          </button>
+          
+          <button 
+            (click)="continue()"
+            [disabled]="completedCycles() < 1"
+            [class]="completedCycles() >= 1 ? 'flex items-center px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-xl hover:from-amber-600 hover:to-orange-700 transition-all duration-300 shadow-lg hover:shadow-amber-500/25 transform hover:scale-105' : 'flex items-center px-8 py-3 bg-slate-700/40 text-slate-500 rounded-xl cursor-not-allowed border border-slate-600/30'">
+            Reflect
+            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>

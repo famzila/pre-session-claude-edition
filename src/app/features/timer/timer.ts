@@ -1,5 +1,6 @@
 import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { SoundService } from '../../shared/services/sound.service';
 
 enum TimerPhase {
   WORK = 'WORK',
@@ -16,6 +17,7 @@ enum TimerPhase {
 })
 export class Timer implements OnDestroy {
   private router = inject(Router);
+  private soundService = inject(SoundService);
   
   // Timer settings (in minutes)
   workDuration = signal(25);
@@ -56,6 +58,10 @@ export class Timer implements OnDestroy {
   isBreakTime = computed(() => this.currentPhase() === TimerPhase.BREAK);
   
   circumference = computed(() => 2 * Math.PI * 45);
+  
+  // Sound status for display
+  selectedSoundName = computed(() => this.soundService.getSelectedSoundName());
+  isSoundPlaying = this.soundService.isPlaying;
   
   strokeDashoffset = computed(() => {
     if (this.totalTime() === 0) return this.circumference();
@@ -103,6 +109,10 @@ export class Timer implements OnDestroy {
     this.timeRemaining.set(workSeconds);
     this.totalTime.set(workSeconds);
     this.isActive.set(true);
+    
+    // Start sound when work phase begins
+    this.soundService.startSound();
+    
     this.startCountdown();
   }
   
@@ -111,6 +121,10 @@ export class Timer implements OnDestroy {
     this.currentPhase.set(TimerPhase.BREAK);
     this.timeRemaining.set(breakSeconds);
     this.totalTime.set(breakSeconds);
+    
+    // Stop sound during break time
+    this.soundService.stopSound();
+    
     this.startCountdown();
   }
   
@@ -140,6 +154,9 @@ export class Timer implements OnDestroy {
         this.currentPhase.set(TimerPhase.COMPLETED);
         this.isActive.set(false);
         this.timeRemaining.set(0);
+        
+        // Stop sound when all cycles are completed
+        this.soundService.stopSound();
       }
     } else if (this.currentPhase() === TimerPhase.BREAK) {
       // Break phase completed, ready for next work cycle
@@ -152,12 +169,21 @@ export class Timer implements OnDestroy {
   
   private resumeTimer() {
     this.isActive.set(true);
+    
+    // Resume sound if in work phase
+    if (this.currentPhase() === TimerPhase.WORK) {
+      this.soundService.startSound();
+    }
+    
     this.startCountdown();
   }
   
   pauseTimer() {
     this.isActive.set(false);
     this.stopCountdown();
+    
+    // Pause sound when timer is paused
+    this.soundService.stopSound();
   }
   
   resetTimer() {
@@ -167,6 +193,9 @@ export class Timer implements OnDestroy {
     this.completedCycles.set(0);
     this.timeRemaining.set(this.workDuration() * 60);
     this.totalTime.set(this.workDuration() * 60);
+    
+    // Stop sound when timer is reset
+    this.soundService.stopSound();
   }
   
   private stopCountdown() {

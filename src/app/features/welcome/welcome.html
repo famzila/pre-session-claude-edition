@@ -1,63 +1,92 @@
-<div class="flex items-center justify-center p-6">
-  <div class="max-w-4xl mx-auto text-center">
-    <!-- Brain Icon -->
-    <div class="mb-8">
-      <div class="w-20 h-20 bg-emerald-600 rounded-full flex items-center justify-center mx-auto mb-8">
-        <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </svg>
+<!-- Dark theme welcome page with warm glass morphism design -->
+<div class="flex items-center justify-center p-6 relative overflow-hidden">
+  <!-- Ambient glow effects -->
+  <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl"></div>
+  <div class="absolute top-3/4 left-1/2 w-64 h-64 bg-amber-500/10 rounded-full blur-3xl"></div>
+  
+  <!-- Main container with glass morphism -->
+  <div class="max-w-4xl mx-auto text-center relative z-10 backdrop-blur-xl bg-slate-800/40 rounded-3xl border border-slate-700/50 p-12 shadow-2xl">
+    
+    <!-- Brain Icon with glow effect -->
+    <div class="mb-12">
+      <div class="relative inline-block">
+        <div class="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full blur-xl opacity-60"></div>
+        <div class="relative w-24 h-24 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-full flex items-center justify-center mx-auto shadow-lg">
+          <svg class="w-12 h-12 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+          </svg>
+        </div>
       </div>
     </div>
 
-    <!-- Header -->
-    <header class="mb-12">
-      <h1 class="text-5xl font-bold text-gray-900 mb-6">Welcome to Deep Work</h1>
-      <p class="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+    <!-- Header with enhanced typography -->
+    <header class="mb-16">
+      <h1 class="text-6xl font-bold text-slate-100 mb-8 bg-gradient-to-r from-slate-100 to-slate-300 bg-clip-text text-transparent">
+        Welcome to Deep Work
+      </h1>
+      <p class="text-xl text-slate-200 max-w-2xl mx-auto leading-relaxed font-light">
         Transform your focus with our guided preparation ritual. In just a few minutes,<br>
         we'll help you create the perfect environment for deep, meaningful work.
       </p>
     </header>
 
-    <!-- Three Cards -->
-    <section class="mb-12">
+    <!-- Three Cards with glass morphism -->
+    <section class="mb-16">
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+        
         <!-- Prepare Card -->
-        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
-          <div class="mb-6">
-            <svg class="w-12 h-12 text-gray-700 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-            </svg>
+        <div class="group backdrop-blur-xl bg-slate-900/60 rounded-2xl p-8 border border-slate-600/30 hover:border-emerald-400/50 transition-all duration-300 hover:transform hover:-translate-y-1">
+          <div class="mb-8">
+            <div class="relative inline-block">
+              <div class="absolute inset-0 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-2xl blur-lg opacity-40 group-hover:opacity-70 transition-opacity duration-300"></div>
+              <div class="relative w-16 h-16 bg-gradient-to-br from-emerald-400/80 to-teal-500/80 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                <svg class="w-8 h-8 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                </svg>
+              </div>
+            </div>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-4">Prepare</h3>
-          <p class="text-gray-600 leading-relaxed">
+          <h3 class="text-2xl font-semibold text-slate-100 mb-4">Prepare</h3>
+          <p class="text-slate-300 leading-relaxed font-light">
             Set up your space and<br>
             mind for focused work
           </p>
         </div>
 
         <!-- Focus Card -->
-        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
-          <div class="mb-6">
-            <svg class="w-12 h-12 text-gray-700 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-            </svg>
+        <div class="group backdrop-blur-xl bg-slate-900/60 rounded-2xl p-8 border border-slate-600/30 hover:border-amber-400/50 transition-all duration-300 hover:transform hover:-translate-y-1">
+          <div class="mb-8">
+            <div class="relative inline-block">
+              <div class="absolute inset-0 bg-gradient-to-br from-amber-400 to-orange-500 rounded-2xl blur-lg opacity-40 group-hover:opacity-70 transition-opacity duration-300"></div>
+              <div class="relative w-16 h-16 bg-gradient-to-br from-amber-400/80 to-orange-500/80 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                <svg class="w-8 h-8 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+              </div>
+            </div>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-4">Focus</h3>
-          <p class="text-gray-600 leading-relaxed">
+          <h3 class="text-2xl font-semibold text-slate-100 mb-4">Focus</h3>
+          <p class="text-slate-300 leading-relaxed font-light">
             Use breathing exercises<br>
             to center yourself
           </p>
         </div>
 
         <!-- Work Card -->
-        <div class="bg-white rounded-2xl p-8 shadow-sm border border-gray-200">
-          <div class="mb-6">
-            <svg class="w-12 h-12 text-gray-700 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
+        <div class="group backdrop-blur-xl bg-slate-900/60 rounded-2xl p-8 border border-slate-600/30 hover:border-purple-400/50 transition-all duration-300 hover:transform hover:-translate-y-1">
+          <div class="mb-8">
+            <div class="relative inline-block">
+              <div class="absolute inset-0 bg-gradient-to-br from-purple-500 to-indigo-600 rounded-2xl blur-lg opacity-40 group-hover:opacity-70 transition-opacity duration-300"></div>
+              <div class="relative w-16 h-16 bg-gradient-to-br from-purple-500/80 to-indigo-600/80 rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+                <svg class="w-8 h-8 text-white drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+              </div>
+            </div>
           </div>
-          <h3 class="text-xl font-semibold text-gray-900 mb-4">Work</h3>
-          <p class="text-gray-600 leading-relaxed">
+          <h3 class="text-2xl font-semibold text-slate-100 mb-4">Work</h3>
+          <p class="text-slate-300 leading-relaxed font-light">
             Enter your flow state<br>
             with our Pomodoro timer
           </p>
@@ -65,13 +94,16 @@
       </div>
     </section>
 
-    <!-- CTA Button -->
+    <!-- CTA Button with warm glow -->
     <div class="flex justify-center">
-      <button 
-        class="bg-emerald-600 hover:bg-emerald-700 text-white px-10 py-4 rounded-xl text-lg font-medium transition-colors duration-200" 
-        (click)="startSession()">
-        Begin Your Journey
-      </button>
+      <div class="relative inline-block">
+        <div class="absolute inset-0 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-2xl blur-lg opacity-60"></div>
+        <button 
+          class="relative bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-300 hover:to-teal-400 text-white px-12 py-5 rounded-2xl text-xl font-medium transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-lg" 
+          (click)="startSession()">
+          Begin Your Journey
+        </button>
+      </div>
     </div>
   </div>
 </div>

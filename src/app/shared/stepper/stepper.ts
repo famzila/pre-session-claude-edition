@@ -58,32 +58,36 @@ export class Stepper {
   }
   
   getStepClass(stepId: StepId): string {
-    const baseClass = 'w-12 h-12 rounded-full flex items-center justify-center';
+    const baseClass = 'w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 border-2';
     
-    if (this.isStepCompleted(stepId) || this.isCurrentStep(stepId)) {
-      return `${baseClass} bg-emerald-600`;
+    if (this.isStepCompleted(stepId)) {
+      return `${baseClass} bg-gradient-to-br from-amber-400 to-orange-500 border-amber-400/50 shadow-lg shadow-amber-500/25`;
+    } else if (this.isCurrentStep(stepId)) {
+      return `${baseClass} bg-gradient-to-br from-amber-400 to-orange-500 border-amber-400/50 shadow-lg shadow-amber-500/25`;
     }
     
-    return `${baseClass} bg-gray-300`;
+    return `${baseClass} bg-slate-700/50 border-slate-600/50 backdrop-blur-sm`;
   }
   
   getStepLabelClass(stepId: StepId): string {
-    const baseClass = 'ml-2 text-sm font-medium';
+    const baseClass = 'ml-2 text-xs md:text-sm font-medium transition-colors duration-300';
     
-    if (this.isStepCompleted(stepId) || this.isCurrentStep(stepId)) {
-      return `${baseClass} text-gray-900`;
+    if (this.isStepCompleted(stepId)) {
+      return `${baseClass} text-amber-300`;
+    } else if (this.isCurrentStep(stepId)) {
+      return `${baseClass} text-amber-300`;
     }
     
-    return `${baseClass} text-gray-500`;
+    return `${baseClass} text-slate-400`;
   }
   
   getProgressLineClass(stepId: StepId): string {
-    const baseClass = 'w-16 h-1';
+    const baseClass = 'w-8 md:w-12 h-1 transition-all duration-500 rounded-full';
     
     if (this.isStepCompleted(stepId)) {
-      return `${baseClass} bg-emerald-600`;
+      return `${baseClass} bg-gradient-to-r from-amber-400 to-orange-500 shadow-sm shadow-amber-500/25`;
     }
     
-    return `${baseClass} bg-gray-300`;
+    return `${baseClass} bg-slate-700/50`;
   }
 }

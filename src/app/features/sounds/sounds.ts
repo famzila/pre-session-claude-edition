@@ -1,5 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { SoundService } from '../../shared/services/sound.service';
 
 interface Sound {
   id: number;
@@ -14,8 +15,9 @@ interface Sound {
   templateUrl: './sounds.html',
   styleUrl: './sounds.scss'
 })
-export class Sounds {
+export class Sounds implements OnDestroy {
   private router = inject(Router);
+  private soundService = inject(SoundService);
   
   sounds = signal<Sound[]>([
     {
@@ -31,7 +33,7 @@ export class Sounds {
       name: 'Ocean Waves',
       description: 'Peaceful waves',
       icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L9.275 7.5M14 10h-4m0 0h-4m4 0v6"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h8m2 0h1M4 21V9a4 4 0 014-4h8a4 4 0 014 4v12"></path>
             </svg>`
     },
     {
@@ -39,7 +41,7 @@ export class Sounds {
       name: 'Forest',
       description: 'Birds and leaves',
       icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z M7 13h10M12 16v5M8 20h8"></path>
             </svg>`
     },
     {
@@ -47,7 +49,7 @@ export class Sounds {
       name: 'Coffee Shop',
       description: 'Ambient chatter',
       icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z M17 11h2a2 2 0 012 2v1a2 2 0 01-2 2h-2"></path>
             </svg>`
     },
     {
@@ -55,7 +57,7 @@ export class Sounds {
       name: 'Brown Noise',
       description: 'Deep frequency',
       icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.04 6.464A7 7 0 1019.46 20L5.04 6.464z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M6 10v4M10 8v8M14 6v12M18 4v16"></path>
             </svg>`
     },
     {
@@ -63,33 +65,40 @@ export class Sounds {
       name: 'Pink Noise',
       description: 'Balanced frequency',
       icon: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z M21 16c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"></path>
             </svg>`
     }
   ]);
   
-  selectedSoundId = signal<number | null>(null);
+  selectedSoundId = this.soundService.selectedSoundId;
   isPlaying = signal<number | null>(null);
   
   selectSound(id: number) {
-    this.selectedSoundId.set(id);
+    this.soundService.setSelectedSound(id);
   }
   
-  togglePreview(id: number, event: Event) {
+  async togglePreview(id: number, event: Event) {
     event.stopPropagation();
     
     if (this.isPlaying() === id) {
       // Stop playing
+      this.soundService.stopPreview();
       this.isPlaying.set(null);
     } else {
       // Start playing
       this.isPlaying.set(id);
-      // Simulate stopping after 3 seconds (in real app, this would be tied to actual audio)
-      setTimeout(() => {
-        if (this.isPlaying() === id) {
-          this.isPlaying.set(null);
-        }
-      }, 3000);
+      try {
+        await this.soundService.playPreview(id);
+        // Audio will auto-stop after 2 seconds as configured in service
+        setTimeout(() => {
+          if (this.isPlaying() === id) {
+            this.isPlaying.set(null);
+          }
+        }, 2000);
+      } catch (error) {
+        console.warn('Failed to play preview:', error);
+        this.isPlaying.set(null);
+      }
     }
   }
   
@@ -101,5 +110,10 @@ export class Sounds {
     if (this.selectedSoundId()) {
       this.router.navigate(['/breathing']);
     }
+  }
+  
+  ngOnDestroy() {
+    // Stop any playing preview when component is destroyed
+    this.soundService.stopPreview();
   }
 }

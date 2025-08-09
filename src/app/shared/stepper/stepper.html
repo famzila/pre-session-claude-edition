@@ -1,103 +1,103 @@
-<div class="bg-white border-b border-gray-200 px-6 py-4">
-  <div class="max-w-4xl mx-auto">
-    <div class="flex items-center justify-center space-x-8">
+<div class="bg-gradient-to-r from-slate-800/80 via-slate-900/90 to-slate-800/80 backdrop-blur-xl border-b border-slate-700/50 px-4 py-6 shadow-2xl">
+  <div class="max-w-6xl mx-auto">
+    <div class="flex items-center justify-center space-x-3 md:space-x-4 lg:space-x-6 overflow-x-auto scrollbar-hide">
       <!-- Welcome Step -->
-      <div class="flex items-center">
+      <div class="flex items-center flex-shrink-0">
         <div [class]="getStepClass('welcome')">
           @if (isStepCompleted('welcome')) {
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
           } @else if (isCurrentStep('welcome')) {
-            <div class="w-3 h-3 bg-white rounded-full"></div>
+            <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
           }
         </div>
-        <span [class]="getStepLabelClass('welcome')">Welcome</span>
+        <span [class]="getStepLabelClass('welcome')" class="whitespace-nowrap">Welcome</span>
       </div>
       
       <!-- Progress Line -->
-      <div [class]="getProgressLineClass('welcome')"></div>
+      <div [class]="getProgressLineClass('welcome')" class="flex-shrink-0"></div>
       
       <!-- Prepare Step -->
-      <div class="flex items-center">
+      <div class="flex items-center flex-shrink-0">
         <div [class]="getStepClass('prepare')">
           @if (isStepCompleted('prepare')) {
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
           } @else if (isCurrentStep('prepare')) {
-            <div class="w-3 h-3 bg-white rounded-full"></div>
+            <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
           }
         </div>
-        <span [class]="getStepLabelClass('prepare')">Prepare</span>
+        <span [class]="getStepLabelClass('prepare')" class="whitespace-nowrap">Prepare</span>
       </div>
       
       <!-- Progress Line -->
-      <div [class]="getProgressLineClass('prepare')"></div>
+      <div [class]="getProgressLineClass('prepare')" class="flex-shrink-0"></div>
       
       <!-- Focus Sounds Step -->
-      <div class="flex items-center">
+      <div class="flex items-center flex-shrink-0">
         <div [class]="getStepClass('sounds')">
           @if (isStepCompleted('sounds')) {
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
           } @else if (isCurrentStep('sounds')) {
-            <div class="w-3 h-3 bg-white rounded-full"></div>
+            <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
           }
         </div>
-        <span [class]="getStepLabelClass('sounds')">Focus Sounds</span>
+        <span [class]="getStepLabelClass('sounds')" class="whitespace-nowrap">Focus Sounds</span>
       </div>
       
       <!-- Progress Line -->
-      <div [class]="getProgressLineClass('sounds')"></div>
+      <div [class]="getProgressLineClass('sounds')" class="flex-shrink-0"></div>
       
       <!-- Breathe Step -->
-      <div class="flex items-center">
+      <div class="flex items-center flex-shrink-0">
         <div [class]="getStepClass('breathing')">
           @if (isStepCompleted('breathing')) {
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
           } @else if (isCurrentStep('breathing')) {
-            <div class="w-3 h-3 bg-white rounded-full"></div>
+            <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
           }
         </div>
-        <span [class]="getStepLabelClass('breathing')">Breathe</span>
+        <span [class]="getStepLabelClass('breathing')" class="whitespace-nowrap">Breathe</span>
       </div>
       
       <!-- Progress Line -->
-      <div [class]="getProgressLineClass('breathing')"></div>
+      <div [class]="getProgressLineClass('breathing')" class="flex-shrink-0"></div>
       
       <!-- Deep Work Step -->
-      <div class="flex items-center">
+      <div class="flex items-center flex-shrink-0">
         <div [class]="getStepClass('timer')">
           @if (isStepCompleted('timer')) {
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
           } @else if (isCurrentStep('timer')) {
-            <div class="w-3 h-3 bg-white rounded-full"></div>
+            <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
           }
         </div>
-        <span [class]="getStepLabelClass('timer')">Deep Work</span>
+        <span [class]="getStepLabelClass('timer')" class="whitespace-nowrap">Deep Work</span>
       </div>
       
       <!-- Progress Line -->
-      <div [class]="getProgressLineClass('timer')"></div>
+      <div [class]="getProgressLineClass('timer')" class="flex-shrink-0"></div>
       
       <!-- Reflect Step -->
-      <div class="flex items-center">
+      <div class="flex items-center flex-shrink-0">
         <div [class]="getStepClass('reflection')">
           @if (isStepCompleted('reflection')) {
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
           } @else if (isCurrentStep('reflection')) {
-            <div class="w-3 h-3 bg-white rounded-full"></div>
+            <div class="w-2.5 h-2.5 bg-white rounded-full"></div>
           }
         </div>
-        <span [class]="getStepLabelClass('reflection')">Reflect</span>
+        <span [class]="getStepLabelClass('reflection')" class="whitespace-nowrap">Reflect</span>
       </div>
     </div>
   </div>
