@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, effect } from '@angular/core';
 import { Router } from '@angular/router';
 
 interface ChecklistItem {
@@ -15,13 +15,9 @@ interface ChecklistItem {
 })
 export class Checklist {
   private router = inject(Router);
+  private readonly STORAGE_KEY = 'deepwork-checklist-items';
   
-  checklistItems = signal<ChecklistItem[]>([
-    { id: 1, text: 'Phone in another room', completed: false },
-    { id: 2, text: 'Water bottle ready', completed: false },
-    { id: 3, text: 'Workspace organized', completed: false },
-    { id: 4, text: 'Notifications turned off', completed: false }
-  ]);
+  checklistItems = signal<ChecklistItem[]>(this.loadFromStorage());
   
   newItemText = signal('');
   editingItemId = signal<number | null>(null);
@@ -104,5 +100,53 @@ export class Checklist {
   
   continue() {
     this.router.navigate(['/sounds']);
+  }
+
+  constructor() {
+    // Set up automatic persistence when checklist items change
+    effect(() => {
+      const items = this.checklistItems();
+      this.saveToStorage(items);
+    });
+  }
+
+  private getDefaultItems(): ChecklistItem[] {
+    return [
+      { id: 1, text: 'Phone in another room', completed: false },
+      { id: 2, text: 'Water bottle ready', completed: false },
+      { id: 3, text: 'Workspace organized', completed: false },
+      { id: 4, text: 'Notifications turned off', completed: false }
+    ];
+  }
+
+  private loadFromStorage(): ChecklistItem[] {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        // Validate that the data has the expected structure
+        if (Array.isArray(parsed) && parsed.every(item => 
+          typeof item.id === 'number' && 
+          typeof item.text === 'string' && 
+          typeof item.completed === 'boolean'
+        )) {
+          // Reset all items to unchecked for each new ritual session
+          return parsed.map(item => ({ ...item, completed: false }));
+        }
+      }
+    } catch (error) {
+      console.warn('Failed to load checklist from localStorage:', error);
+    }
+    
+    // Return default items if no valid data found
+    return this.getDefaultItems();
+  }
+
+  private saveToStorage(items: ChecklistItem[]): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(items));
+    } catch (error) {
+      console.warn('Failed to save checklist to localStorage:', error);
+    }
   }
 }

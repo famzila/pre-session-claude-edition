@@ -12,12 +12,19 @@
         </div>
 
         <!-- Progress Bar -->
-        <div class="mb-8">
+        <div class="mb-8" role="region" aria-label="Preparation progress">
           <div class="flex justify-between items-center mb-3">
-            <span class="text-sm font-medium text-slate-300">Progress</span>
-            <span class="text-sm font-medium text-slate-200">{{completedCount()}}/{{checklistItems().length}}</span>
+            <span class="text-sm font-medium text-slate-300" id="progress-label">Progress</span>
+            <span class="text-sm font-medium text-slate-200" aria-live="polite">{{completedCount()}}/{{checklistItems().length}}</span>
           </div>
-          <div class="w-full bg-slate-700/50 rounded-full h-3 shadow-inner">
+          <div 
+            class="w-full bg-slate-700/50 rounded-full h-3 shadow-inner"
+            role="progressbar"
+            [attr.aria-valuenow]="completedCount()"
+            [attr.aria-valuemin]="0"
+            [attr.aria-valuemax]="checklistItems().length"
+            [attr.aria-valuetext]="completedCount() + ' of ' + checklistItems().length + ' tasks completed'"
+            aria-labelledby="progress-label">
             <div 
               class="bg-gradient-to-r from-amber-400 to-orange-500 h-3 rounded-full transition-all duration-500 shadow-lg shadow-amber-500/30" 
               [style.width.%]="progressPercentage()">
@@ -26,16 +33,22 @@
         </div>
 
         <!-- Checklist Items -->
-        <div class="space-y-4 mb-8">
+        <div class="space-y-4 mb-8" role="list" aria-label="Preparation checklist">
           @for (item of checklistItems(); track item.id) {
-            <div [class]="item.completed ? 'flex items-center p-5 bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl border border-amber-400/30 shadow-lg shadow-amber-500/10' : 'flex items-center p-5 bg-slate-700/30 rounded-2xl border border-slate-600/50 hover:border-slate-500/70 transition-all duration-300'">
+            <div 
+              [class]="item.completed ? 'flex items-center p-5 bg-gradient-to-r from-amber-500/10 to-orange-500/10 rounded-2xl border border-amber-400/30 shadow-lg shadow-amber-500/10' : 'flex items-center p-5 bg-slate-700/30 rounded-2xl border border-slate-600/50 hover:border-slate-500/70 transition-all duration-300'"
+              role="listitem">
               <!-- Checkbox -->
               <div class="flex-shrink-0 mr-5">
                 <button 
                   (click)="toggleItem(item.id)"
-                  [class]="item.completed ? 'w-7 h-7 rounded-xl border-2 border-amber-400 bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center hover:from-amber-500 hover:to-orange-600 transition-all duration-300 shadow-lg shadow-amber-500/30' : 'w-7 h-7 rounded-xl border-2 border-slate-500 bg-slate-800/50 flex items-center justify-center hover:border-amber-400 hover:shadow-md hover:shadow-amber-500/20 transition-all duration-300'">
+                  [class]="item.completed ? 'w-7 h-7 rounded-xl border-2 border-amber-400 bg-gradient-to-r from-amber-400 to-orange-500 flex items-center justify-center hover:from-amber-500 hover:to-orange-600 transition-all duration-300 shadow-lg shadow-amber-500/30' : 'w-7 h-7 rounded-xl border-2 border-slate-500 bg-slate-800/50 flex items-center justify-center hover:border-amber-400 hover:shadow-md hover:shadow-amber-500/20 transition-all duration-300'"
+                  role="checkbox"
+                  [attr.aria-checked]="item.completed"
+                  [attr.aria-labelledby]="'item-label-' + item.id"
+                  [attr.aria-describedby]="item.completed ? 'item-completed-' + item.id : null">
                   @if (item.completed) {
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                   }
@@ -51,9 +64,18 @@
                     (input)="updateEditingText($event)"
                     (keyup.enter)="saveEdit()"
                     (keyup.escape)="cancelEdit()"
-                    class="w-full bg-transparent border-none outline-none text-slate-200 font-medium placeholder-slate-400 focus:text-amber-300">
+                    class="w-full bg-transparent border-none outline-none text-slate-200 font-medium placeholder-slate-400 focus:text-amber-300"
+                    [attr.aria-label]="'Edit task: ' + item.text"
+                    aria-describedby="edit-instructions">
                 } @else {
-                  <span [class]="item.completed ? 'text-slate-300 line-through opacity-80' : 'text-slate-200 font-medium'">{{item.text}}</span>
+                  <span 
+                    [class]="item.completed ? 'text-slate-300 line-through opacity-80' : 'text-slate-200 font-medium'"
+                    [id]="'item-label-' + item.id">
+                    {{item.text}}
+                  </span>
+                  @if (item.completed) {
+                    <span [id]="'item-completed-' + item.id" class="sr-only">completed</span>
+                  }
                 }
               </div>
               
@@ -62,30 +84,38 @@
                 @if (editingItemId() === item.id) {
                   <button 
                     (click)="saveEdit()"
-                    class="p-2 text-amber-400 hover:bg-amber-500/20 rounded-xl transition-all duration-300 hover:shadow-md hover:shadow-amber-500/20">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="p-2 text-amber-400 hover:bg-amber-500/20 rounded-xl transition-all duration-300 hover:shadow-md hover:shadow-amber-500/20"
+                    aria-label="Save changes"
+                    title="Save changes">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
                     </svg>
                   </button>
                   <button 
                     (click)="cancelEdit()"
-                    class="p-2 text-slate-400 hover:bg-slate-600/30 rounded-xl transition-all duration-300">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="p-2 text-slate-400 hover:bg-slate-600/30 rounded-xl transition-all duration-300"
+                    aria-label="Cancel editing"
+                    title="Cancel editing">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
                   </button>
                 } @else {
                   <button 
                     (click)="startEdit(item.id, item.text)"
-                    class="p-2 text-amber-400 hover:bg-amber-500/20 rounded-xl transition-all duration-300 hover:shadow-md hover:shadow-amber-500/20">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="p-2 text-amber-400 hover:bg-amber-500/20 rounded-xl transition-all duration-300 hover:shadow-md hover:shadow-amber-500/20"
+                    [attr.aria-label]="'Edit task: ' + item.text"
+                    title="Edit task">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
                   </button>
                   <button 
                     (click)="deleteItem(item.id)"
-                    class="p-2 text-red-400 hover:bg-red-500/20 rounded-xl transition-all duration-300 hover:shadow-md hover:shadow-red-500/20">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    class="p-2 text-red-400 hover:bg-red-500/20 rounded-xl transition-all duration-300 hover:shadow-md hover:shadow-red-500/20"
+                    [attr.aria-label]="'Delete task: ' + item.text"
+                    title="Delete task">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
                     </svg>
                   </button>
@@ -97,19 +127,31 @@
 
         <!-- Add New Item -->
         <div class="flex items-center p-5 bg-slate-700/30 rounded-2xl border border-slate-600/50 mb-8 hover:border-slate-500/70 transition-all duration-300 focus-within:border-amber-400/50 focus-within:shadow-lg focus-within:shadow-amber-500/10">
+          <label for="new-item-input" class="sr-only">Add a new preparation step</label>
           <input 
+            id="new-item-input"
             type="text" 
-            [value]="newItemText()" (input)="updateNewItemText($event)"
+            [value]="newItemText()" 
+            (input)="updateNewItemText($event)"
             (keyup.enter)="addItem()"
             placeholder="Add a preparation step..."
-            class="flex-1 bg-transparent border-none outline-none text-slate-200 placeholder-slate-400 focus:text-amber-300 font-medium">
+            class="flex-1 bg-transparent border-none outline-none text-slate-200 placeholder-slate-400 focus:text-amber-300 font-medium"
+            aria-label="Add a new preparation step">
           <button 
             (click)="addItem()"
-            class="ml-4 w-10 h-10 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl flex items-center justify-center hover:from-amber-500 hover:to-orange-600 transition-all duration-300 shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            class="ml-4 w-10 h-10 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl flex items-center justify-center hover:from-amber-500 hover:to-orange-600 transition-all duration-300 shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40"
+            aria-label="Add new task"
+            title="Add new task"
+            [disabled]="!newItemText().trim()">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
             </svg>
           </button>
+        </div>
+
+        <!-- Hidden instructions for screen readers -->
+        <div id="edit-instructions" class="sr-only">
+          Press Enter to save changes or Escape to cancel editing.
         </div>
 
         <!-- Navigation -->
@@ -124,13 +166,14 @@
           </button>
           
           <button 
-            (click)="continue()"
-            class="flex items-center px-8 py-4 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-2xl hover:from-amber-500 hover:to-orange-600 transition-all duration-300 shadow-lg shadow-amber-500/30 hover:shadow-xl hover:shadow-amber-500/40 font-medium">
-            Continue
-            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-          </button>
+          (click)="continue()"
+          [disabled]="progressPercentage() !== 100"
+          [class]="progressPercentage() === 100 ? 'flex items-center px-8 py-3 bg-gradient-to-r from-amber-500 to-orange-600 text-white rounded-xl hover:from-amber-600 hover:to-orange-700 transition-all duration-300 shadow-lg shadow-amber-500/20' : 'flex items-center px-8 py-3 bg-slate-600/30 text-slate-500 rounded-xl cursor-not-allowed backdrop-blur-sm border border-slate-600/50'">
+          Continue
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
         </div>
       </div>
     </div>
